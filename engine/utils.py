@@ -10,7 +10,6 @@ from langchain.llms import OpenAI
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.vectorstores import VectorStore
 from langchain.vectorstores.faiss import FAISS
-from openai.error import AuthenticationError
 from pypdf import PdfReader
 
 from langchain_community.chat_models.ollama import ChatOllama
@@ -112,7 +111,7 @@ def get_answer(docs: List[Document], query: str) -> Dict[str, Any]:
     """Gets an answer to a question from a list of Documents."""
 
     # Get the answer
-    chat_model = ChatOllama(model="llama3:8b")  # or whichever Llama 3 model you have in Ollama
+    chat_model = ChatOllama(model="llama3:8b")
 
     chain = load_qa_with_sources_chain(
         chat_model,
@@ -123,25 +122,7 @@ def get_answer(docs: List[Document], query: str) -> Dict[str, Any]:
     answer = chain(
         {"input_documents": docs, "question": query}, return_only_outputs=True
     )
-    print(answer)
     return answer
-# def get_answer(docs: List[Document], query: str) -> Dict[str, Any]:
-#     """Gets an answer to a question from a list of Documents."""
-
-#     # Get the answer
-
-#     chain = load_qa_with_sources_chain(
-#         OpenAI(
-#             temperature=0, openai_api_key=st.session_state.get("OPENAI_API_KEY")
-#         ),  # type: ignore
-#         chain_type="stuff",
-#         prompt=STUFF_PROMPT,
-#     )
-
-#     answer = chain(
-#         {"input_documents": docs, "question": query}, return_only_outputs=True
-#     )
-#     return answer
 
 
 # @st.cache_data
