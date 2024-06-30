@@ -47,8 +47,8 @@ class SentenceTransformerEmbeddings(Embeddings):
             texts (List[str]): A list of strings to embed.
 
         Returns:
-            List[List[float]]: A list of embeddings, each embedding being 
-            a list of floats.
+            List[List[float]]: A list of embeddings, 
+            each embedding being a list of floats.
         """
         embeddings = self.model.encode(texts)
         return embeddings.tolist()
