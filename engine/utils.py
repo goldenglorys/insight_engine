@@ -13,7 +13,9 @@ from langchain.vectorstores.faiss import FAISS
 from openai.error import AuthenticationError
 from pypdf import PdfReader
 
-from engine.embeddings import OpenAIEmbeddings
+from langchain_community.chat_models.ollama import ChatOllama
+
+from engine.embeddings import SentenceTransformerEmbeddings
 from engine.prompts import STUFF_PROMPT
 
 
@@ -84,26 +86,18 @@ def text_to_docs(text: str | List[str]) -> List[Document]:
     return doc_chunks
 
 
-@st.cache_data
+# @st.cache_data
 def embed_docs(docs: List[Document]) -> VectorStore:
     """Embeds a list of Documents and returns a FAISS index"""
 
-    if not st.session_state.get("OPENAI_API_KEY"):
-        raise AuthenticationError(
-            "Enter your OpenAI API key in the sidebar. You can get a key at"
-            " https://platform.openai.com/account/api-keys."
-        )
-    else:
-        # Embed the chunks
-        embeddings = OpenAIEmbeddings(
-            openai_api_key=st.session_state.get("OPENAI_API_KEY")
-        )  # type: ignore
-        index = FAISS.from_documents(docs, embeddings)
+    # Embed the chunks
+    embeddings = SentenceTransformerEmbeddings()
+    index = FAISS.from_documents(docs, embeddings)
 
-        return index
+    return index
 
 
-@st.cache_data
+# @st.cache_data
 def search_docs(index: VectorStore, query: str) -> List[Document]:
     """Searches a FAISS index for similar chunks to the query
     and returns a list of Documents."""
@@ -113,31 +107,44 @@ def search_docs(index: VectorStore, query: str) -> List[Document]:
     return docs
 
 
-@st.cache_data
+# @st.cache_data
 def get_answer(docs: List[Document], query: str) -> Dict[str, Any]:
     """Gets an answer to a question from a list of Documents."""
 
     # Get the answer
+    chat_model = ChatOllama(model="llama3:8b")  # or whichever Llama 3 model you have in Ollama
 
     chain = load_qa_with_sources_chain(
-        OpenAI(
-            temperature=0, openai_api_key=st.session_state.get("OPENAI_API_KEY")
-        ),  # type: ignore
+        chat_model,
         chain_type="stuff",
         prompt=STUFF_PROMPT,
     )
 
-    # Cohere doesn't work very well as of now.
-    # chain = load_qa_with_sources_chain(
-    #     Cohere(temperature=0), chain_type="stuff", prompt=STUFF_PROMPT  # type: ignore
-    # )
     answer = chain(
         {"input_documents": docs, "question": query}, return_only_outputs=True
     )
+    print(answer)
     return answer
+# def get_answer(docs: List[Document], query: str) -> Dict[str, Any]:
+#     """Gets an answer to a question from a list of Documents."""
+
+#     # Get the answer
+
+#     chain = load_qa_with_sources_chain(
+#         OpenAI(
+#             temperature=0, openai_api_key=st.session_state.get("OPENAI_API_KEY")
+#         ),  # type: ignore
+#         chain_type="stuff",
+#         prompt=STUFF_PROMPT,
+#     )
+
+#     answer = chain(
+#         {"input_documents": docs, "question": query}, return_only_outputs=True
+#     )
+#     return answer
 
 
-@st.cache_data
+# @st.cache_data
 def get_sources(answer: Dict[str, Any], docs: List[Document]) -> List[Document]:
     """Gets the source documents for an answer."""
 
