@@ -17,6 +17,7 @@ docx2txt = "^0.8"
 pillow = "^9.4.0"
 pypdf = "^3.3.0"
 tenacity = "^8.2.0"
+sentence-transformers = "^3.0.1"
 
 
 [tool.poetry.group.dev.dependencies]
