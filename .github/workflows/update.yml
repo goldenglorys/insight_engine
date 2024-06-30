@@ -14,4 +14,4 @@ jobs:
       run: pip install flake8
       
     - name: Run tests
-      run: flake8 insight_engine/embeddings.py
+      run: flake8 engine/embeddings.py
