@@ -369,21 +369,6 @@ files = [
 colorama = {version = "*", markers = "platform_system == \"Windows\""}
 
 [[package]]
-name = "cohere"
-version = "3.10.0"
-description = "A Python library for the Cohere API"
-category = "main"
-optional = false
-python-versions = ">=3.6"
-files = [
-    {file = "cohere-3.10.0.tar.gz", hash = "sha256:8c06a87a47aa9521051eeba130ce391d84ab578148c4ea5b62f6dcc41bd3a274"},
-]
-
-[package.dependencies]
-requests = "*"
-urllib3 = ">=1.26,<2.0"
-
-[[package]]
 name = "colorama"
 version = "0.4.6"
 description = "Cross-platform colored terminal text."
@@ -2298,4 +2283,4 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "963e53a13f3004d266af721c8688638cdf413db54d79967072b2553a33dd40cb"
+content-hash = "084d46a981831484014dd5a0b68303491e3fdfde45ae1a6c0d2131a220fd27b1"
