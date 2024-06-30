@@ -86,7 +86,3 @@ This project is licensed under the MIT License - see the LICENSE file for the le
 - Powered by [LLAMA3](https://github.com/meta-llama/llama3) (the AI, not the animal)
 - Inspired by every student who's ever said, "I don't want to read the whole thing!"
 - A nod to our knowledge-hungry cousin, [KnowledgeGPT](https://github.com/mmz-001/knowledge_gpt/) 
-
-Remember, imitation is the sincerest form of flattery, but we've added our own secret sauce. 
-It's like we took their recipe, added some local Llama spice, and voila! A whole new dish. 
-Bon appétit, knowledge seekers!
