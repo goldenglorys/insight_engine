@@ -1,7 +1,4 @@
 import streamlit as st
-from PIL import Image
-import os
-from openai.error import OpenAIError
 
 from engine.components.sidebar import sidebar
 from engine.utils import (
@@ -57,8 +54,7 @@ if uploaded_file is not None:
     try:
         with st.spinner("Indexing document... This may take a while⏳"):
             index = embed_docs(text)
-        st.session_state["api_key_configured"] = True
-    except OpenAIError as e:
+    except Exception as e:
         st.error(e._message)
 
 query = st.text_area("Ask a question about the document", on_change=clear_submit)
@@ -73,9 +69,7 @@ if show_full_doc and doc:
 
 button = st.button("Submit")
 if button or st.session_state.get("submit"):
-    if not st.session_state.get("api_key_configured"):
-        st.error("Please configure your OpenAI API key!")
-    elif not index:
+    if not index:
         st.error("Please upload a document!")
     elif not query:
         st.error("Please enter a question!")
@@ -102,5 +96,5 @@ if button or st.session_state.get("submit"):
                     st.markdown(source.metadata["source"])
                     st.markdown("---")
 
-        except OpenAIError as e:
+        except Exception as e:
             st.error(e._message)

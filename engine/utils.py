@@ -6,10 +6,9 @@ import docx2txt
 import streamlit as st
 from langchain.chains.qa_with_sources import load_qa_with_sources_chain
 from langchain.docstore.document import Document
-from langchain.llms import OpenAI
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.vectorstores import VectorStore
-from langchain.vectorstores.faiss import FAISS
+from langchain_community.vectorstores import FAISS
 from pypdf import PdfReader
 
 from langchain_community.chat_models.ollama import ChatOllama
@@ -119,7 +118,7 @@ def get_answer(docs: List[Document], query: str) -> Dict[str, Any]:
         prompt=STUFF_PROMPT,
     )
 
-    answer = chain(
+    answer = chain.invoke(
         {"input_documents": docs, "question": query}, return_only_outputs=True
     )
     return answer
